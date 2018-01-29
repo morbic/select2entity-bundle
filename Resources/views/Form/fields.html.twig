@@ -39,20 +39,27 @@
 
     {% spaceless %}
 		{% if app.environment == 'test' %}
-		<input type="text" {{ block('widget_attributes') }} />
-		{% else %}
-        <select {{ block('widget_attributes') }}>
-            {% if value is iterable %}
-                {% if allow_clear %}
-                        <option value=""></option>
+            <input type="text"
+                {{ block('widget_attributes') }}
+                {% if value is iterable %}
+                    {% for id, label in value %}
+                        value="{{ id }}"
+                    {% endfor %}
                 {% endif %}
-                {% for id, label in value %}
-                    {% block tetranz_select2entity_widget_select_option %}
-                        <option value="{{ id }}" selected="selected">{{ label }}</option>
-                    {% endblock %}
-                {% endfor %}
-            {% endif %}
-        </select>
+            />
+		{% else %}
+            <select {{ block('widget_attributes') }}>
+                {% if value is iterable %}
+                    {% if allow_clear %}
+                            <option value=""></option>
+                    {% endif %}
+                    {% for id, label in value %}
+                        {% block tetranz_select2entity_widget_select_option %}
+                            <option value="{{ id }}" selected="selected">{{ label }}</option>
+                        {% endblock %}
+                    {% endfor %}
+                {% endif %}
+            </select>
 		{% endif %}
     {% endspaceless %}
 {% endblock %}
